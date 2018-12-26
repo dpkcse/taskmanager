@@ -1,8 +1,0 @@
-{
-    "db": {
-        "user"     : "root",
-        "password" : "YeezY@001",
-        "database" : "taskmanager",
-        "host": "172.16.0.64"
-    }
-}

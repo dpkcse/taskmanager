@@ -12,6 +12,7 @@ router.get('/', function(req, res, next){
         res_data.user_email = req.session.user_email;
         res_data.user_access = req.session.user_access;
         res_data.title = 'Dashboard | TM::SOHELFSF';
+        res_data.page_title = 'Dashboard';
         res.render('dashboard',res_data);
     } else {
         res.redirect('/');

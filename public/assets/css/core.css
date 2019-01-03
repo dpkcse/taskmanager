@@ -1212,3 +1212,7 @@ pre {
     margin-top: 0px;
   }
 }
+
+.dataTables_filter{
+  text-align: right;
+}

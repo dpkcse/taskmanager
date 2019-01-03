@@ -29,7 +29,7 @@ router.post('/', function(req, res, next) {
       if(results.length > 0){
         req.session.success = true;
         req.session.login = true;
-        req.session.user_id = results[0].zid;
+        req.session.user_id = results[0].user_id;
         req.session.user_fullname = results[0].xname;
         req.session.user_email = results[0].zemail;
         req.session.user_access = results[0].xaccess;

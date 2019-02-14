@@ -20,7 +20,7 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="card-box taskboard-box">
-                                <div class="dropdown pull-right">
+                                <!-- <div class="dropdown pull-right">
                                     <a href="#" class="dropdown-toggle card-drop" data-toggle="dropdown" aria-expanded="false">
                                         <i class="zmdi zmdi-more-vert"></i>
                                     </a>
@@ -31,7 +31,7 @@
                                         <li class="divider"></li>
                                         <li><a href="#">Separated link</a></li>
                                     </ul>
-                                </div>
+                                </div> -->
 
                                 <h4 class="header-title m-t-0 m-b-30 text-primary">Upcoming</h4>
 
@@ -198,7 +198,7 @@
 
                         <div class="col-md-4">
                             <div class="card-box taskboard-box">
-                                <div class="dropdown pull-right">
+                                <!-- <div class="dropdown pull-right">
                                     <a href="#" class="dropdown-toggle card-drop" data-toggle="dropdown" aria-expanded="false">
                                         <i class="zmdi zmdi-more-vert"></i>
                                     </a>
@@ -209,7 +209,7 @@
                                         <li class="divider"></li>
                                         <li><a href="#">Separated link</a></li>
                                     </ul>
-                                </div>
+                                </div> -->
 
                                 <h4 class="header-title m-t-0 m-b-30 text-warning">In Progress</h4>
 
@@ -327,22 +327,21 @@
                                             </div>
                                         </div>
                                     </li>
-
                                 </ul>
 
-                                <div class="text-center">
+                                <!-- <div class="text-center">
                                     <a href="#custom-modal" class="btn btn-default btn-md waves-effect waves-light"
                                        data-animation="fadein" data-plugin="custommodal" data-overlaySpeed="200" data-overlayColor="#36404a">
                                         <i class="zmdi zmdi-plus"></i> Add New
                                     </a>
-                                </div>
+                                </div> -->
                             </div>
                         </div><!-- end col -->
 
 
                         <div class="col-md-4">
                             <div class="card-box taskboard-box">
-                                <div class="dropdown pull-right">
+                                <!-- <div class="dropdown pull-right">
                                     <a href="#" class="dropdown-toggle card-drop" data-toggle="dropdown" aria-expanded="false">
                                         <i class="zmdi zmdi-more-vert"></i>
                                     </a>
@@ -353,9 +352,9 @@
                                         <li class="divider"></li>
                                         <li><a href="#">Separated link</a></li>
                                     </ul>
-                                </div>
+                                </div> -->
 
-                                <h4 class="header-title m-t-0 m-b-30 text-success">Complete</h4>
+                                <h4 class="header-title m-t-0 m-b-30 text-success">Completed</h4>
 
                                 <ul class="list-unstyled task-list" id="drag-complete">
                                     <li>
@@ -509,12 +508,12 @@
 
                                 </ul>
 
-                                <div class="text-center">
+                                <!-- <div class="text-center">
                                     <a href="#custom-modal" class="btn btn-default btn-md waves-effect waves-light"
                                        data-animation="fadein" data-plugin="custommodal" data-overlaySpeed="200" data-overlayColor="#36404a">
                                         <i class="zmdi zmdi-plus"></i> Add New
                                     </a>
-                                </div>
+                                </div> -->
                             </div>
                         </div><!-- end col -->
 
@@ -533,18 +532,37 @@
                 <form role="form">
                     <div class="form-group">
                         <label for="taskName">Task Name</label>
-                        <textare id="taskName" placeholder=""></textare>
+                        <textarea id="taskName" name="taskName" class="form-control"  placeholder="" row='5' required></textarea>
                     </div>
 
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="priority">Priority</label>
-                                <select class="form-control" id="priority">
+                                <select class="form-control" name="priority" id="priority">
                                     <option>High</option>
                                     <option>Medium</option>
                                     <option>Low</option>
                                 </select>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="status">Status</label>
+                                <select class="form-control" name="status" id="status">
+                                    <option>Active</option>
+                                    <option>Inactive</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label">Task Detail</label>
+                                <textarea class="form-control" name="description" id="description" rows="5"></textarea>
                             </div>
                         </div>
                     </div>
@@ -552,15 +570,15 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="Sdate">Start Date</label>
-                                <input type="text" class="form-control" id="Sdate" placeholder="">
+                                <label for="startDate">Start Date</label>
+                                <input type="text" class="form-control" name="startDate" id="startDate" placeholder="">
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="Ddate">Due Date</label>
-                                <input type="text" class="form-control" id="Ddate" placeholder="">
+                                <label for="endDate">Due Date</label>
+                                <input type="text" class="form-control" name="endDate" id="endDate" placeholder="">
                             </div>
                         </div>
                     </div>
@@ -599,4 +617,18 @@
     $(document).ready(function() {
         $('#datatable').dataTable();
     } );
+
+    $("#startDate").flatpickr({
+        dateFormat: "Y-m-d",
+        minDate: "today"
+    });
+
+    $("#endDate").flatpickr({
+        dateFormat: "Y-m-d",
+        minDate: "today"
+    });
 </script>
+
+<script src=""></script>
+
+

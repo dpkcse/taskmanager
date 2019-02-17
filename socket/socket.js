@@ -2,54 +2,32 @@
 module.exports = function (io) {    
     var app = require('express');
     var moment = require('moment');
+    const validateActivityEntryInput = require('../validation/activity_entry');
     var router = app.Router();
     var {
-        getRamInfoUtil,
-        netWorkStatusUtil,
-        cpuStatusUtil,
-        fsSizeStatusUtil
+        saveActivity
     } = require('../utils/update');
 
     io.on('connection', function (client) {
         console.log('Client connected...');
-
+        
         client.on('join', function (data) {
             console.log(data);
         });
 
-        client.on('getRamInfo', function (callback) {
-            getRamInfoUtil().then((data)=>{
-                callback(data);
-            }).catch((error)=>{
-                callback(error);
-            });
+        client.on('activty_entry', function (data,callback) {
+        
+            const { errors, isValid } = validateActivityEntryInput(data.data_obj);
+
+            if (!isValid) {
+                callback({ errors });
+            }else{
+                saveActivity(data.data_obj,(response)=>{
+                    callback({ response });
+                });
+            }
         });        
         
-        client.on('netWorkStatus', function (callback) {
-            netWorkStatusUtil().then((data)=>{
-                callback(data);
-            }).catch((error)=>{
-                callback(error);
-            });
-        });
-
-        client.on('cpuStatus', function (callback) {
-            cpuStatusUtil().then((data)=>{
-                callback(data);
-            }).catch((error)=>{
-                callback(error);
-            });
-        });
-
-        client.on('fsSizeStatus', function (callback) {
-            fsSizeStatusUtil().then((data)=>{
-                callback(data);
-            }).catch((error)=>{
-                callback(error);
-            });
-        });
-
-
     });
 
     return router;

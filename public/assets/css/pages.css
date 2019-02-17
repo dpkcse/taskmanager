@@ -1405,6 +1405,8 @@ div.hopscotch-bubble .hopscotch-bubble-arrow-container.down .hopscotch-bubble-ar
 ============= */
 .taskboard-box ul.task-list {
   min-height: 50px;
+  height: 65vh;
+  overflow-y: auto;
 }
 .kanban-box .checkbox-wrapper {
   float: left;
@@ -2364,4 +2366,13 @@ div.hopscotch-bubble .hopscotch-bubble-arrow-container.down .hopscotch-bubble-ar
 }
 .comment > .comment {
   margin-left: 32px !important;
+}
+
+
+.assignClassModal{
+  width: 90%;
+}
+
+.assignClassModal img{
+  margin-right: 5%;
 }

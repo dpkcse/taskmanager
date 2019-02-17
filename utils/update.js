@@ -1,56 +1,28 @@
 var app = require('express');
+var db = require('../config/db');
 var router = app.Router();
 
-//get RAM status
-function getRamInfoUtil(){
-    return new Promise((resolve,reject)=>{
-        si.mem()
-        .then((data) => {
-            resolve(data);
-        }).catch((error)=>{
-            reject(error)
-        }); 
-    });
-}
+function saveActivity(data,callback){
+    var post  = {
+        cat_id:'2',
+        title: data.taskName,
+        description: data.description,
+        status: data.status,
+        created_by: '1',
+        start_date:data.startDate,
+        end_date: data.endDate,
+        priority: data.priority
+    };
 
-//Get network status
-function netWorkStatusUtil(){
-    return new Promise((resolve,reject)=>{
-        si.networkStats()
-        .then((data) => {
-            resolve(data);
-        }).catch((error)=>{
-            reject(error)
-        }); 
-    });
-}
-//Get CPU status
-function cpuStatusUtil(){
-    return new Promise((resolve,reject)=>{
-        si.cpuCurrentspeed()
-        .then((data) => {
-            resolve(data);
-        }).catch((error)=>{
-            reject(error)
-        }); 
-    });
-}
-
-//Get CPU status
-function fsSizeStatusUtil(){
-    return new Promise((resolve,reject)=>{
-        si.fsSize()
-        .then((data) => {
-            resolve(data);
-        }).catch((error)=>{
-            reject(error)
-        }); 
+    db.query('INSERT INTO activities SET ?', post, function (error, results, fields) {
+        if (error){
+            callback({status:false,error:error});
+        }else{
+            callback({status:true,results:results});
+        }
     });
 }
 
 module.exports = {
-    getRamInfoUtil,
-    netWorkStatusUtil,
-    cpuStatusUtil,
-    fsSizeStatusUtil
+    saveActivity
 };

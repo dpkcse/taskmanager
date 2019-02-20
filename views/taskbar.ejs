@@ -73,8 +73,6 @@
 
                             </div>
                         </div><!-- end col -->
-
-
                         <div class="col-md-4">
                             <div class="card-box taskboard-box">
                                 <h4 class="header-title m-t-0 m-b-30 text-success">Completed</h4>
@@ -83,8 +81,6 @@
                                 <div class="text-center" style="padding: 6px 14px;">&nbsp;</div>
                             </div>
                         </div><!-- end col -->
-
-
                     </div>
                 </div>
             </div> <!-- container -->
@@ -179,7 +175,13 @@
 <!-- Modal-Effect -->
 <script src="/assets/plugins/custombox/dist/custombox.min.js"></script>
 <script src="/assets/plugins/custombox/dist/legacy.min.js"></script>
-
+<!-- end chat -->
+<!-- SOCKET CONNECTION -->
+<script src="/javascripts/basic_tm.js"></script>
+<script>
+    var user_id = '<%= user_id %>';
+    var user_fullname = '<%= user_fullname %>';
+</script>
 <script type="text/javascript">
     $(document).ready(function() {
         $('#datatable').dataTable();
@@ -207,7 +209,8 @@
             status: $('#status').val(),
             description: $('#description').val(),
             startDate: $('#startDate').val(),
-            endDate: $('#endDate').val()
+            endDate: $('#endDate').val(),
+            created_by:user_id
         }
         
         socket.emit('activty_entry', {data_obj}, function(response){
@@ -227,31 +230,17 @@
                     design += '                 </div>';
                     design += '             </div>';
                     design += '         </li>';
-                    
                     $("#upcomingDiv").append(design);
                     $('.close').trigger('click');
             }else{
                 toastr["error"]("Something wrong!!");
                 toastr.options = {
                     "closeButton": false,
-                    "debug": false,
                     "newestOnTop": false,
-                    "progressBar": false,
-                    "positionClass": "toast-top-right",
-                    "preventDuplicates": false,
-                    "onclick": null,
-                    "showDuration": "300",
-                    "hideDuration": "1000",
-                    "timeOut": "5000",
-                    "extendedTimeOut": "1000",
-                    "showEasing": "swing",
-                    "hideEasing": "linear",
-                    "showMethod": "fadeIn",
-                    "hideMethod": "fadeOut"
-                }
+                    "positionClass": "toast-top-right"
+                };
             }
         });
-            
     });
 </script>
 

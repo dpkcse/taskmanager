@@ -34,6 +34,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 // app.use(expressSession({secret: 'keyboard3245235cat', resave: false, saveUninitialized: false}));
 app.use(expressSession);
 app.use(express.static("public"));
+
+alluserlist = []; // {user_id: '1,2,3'}
+
 // Socket.io
 var io = socketIO();
 app.io = io;

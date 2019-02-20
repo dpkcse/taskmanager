@@ -55,16 +55,25 @@
                              <div class="task-tags m-t-20">
                                 <h5 class="font-600">Tags</h5>
                                 <% if(user_id == crteatedById){ %>
-                                <input type="text" value="Amsterdam,Washington,Sydney" data-role="tagsinput" placeholder="add tags"/>
+                                    <input type="text" value="<%= tags %>" data-role="tagsinput" id="tagsinput" placeholder="add tags"/>
                                 <% }else{ %> 
-                                    <input type="text" value="Amsterdam,Washington,Sydney" data-role="tagsinput" readonly />
+                                    <input type="text" value="<%= tags %>" data-role="tagsinput" readonly />
                                 <% } %>
                             </div>
 
                             <div class="assign-team m-t-30">
                                 <h5 class="font-600 m-b-5">Assign to</h5>
                                 <div>
-                                    <a href="#"> <img class="img-circle thumb-sm" alt="64x64" src="/assets/images/users/avatar-2.jpg"> </a>
+                                    <% if(allusers != undefined){ %>
+                                        <% if(allusers.length > 0){ %>
+                                            <% _.each(allusers, function(v, k) {%>
+                                                <% if(taggedUserArray.indexOf(v.user_id) > -1){ %>
+                                                    <a href="#"> <img class="img-circle thumb-sm" title="<%= v.xname %>" alt="<%= v.xname %>" src="/assets/images/users/avatar-2.jpg"> </a>
+                                                <% }%>
+                                            <% }); %>
+                                        <% } %>
+                                    <% } %>
+                                    
                                     
                                     <% if(user_id == crteatedById){ %>
                                         <a href="#" data-toggle="modal" data-target="#con-close-modal"><span class="add-new-plus"><i class="zmdi zmdi-plus"></i> </span></a>
@@ -84,10 +93,17 @@
                                                     <% if(allusers != undefined){ %>
                                                         <% if(allusers.length > 0){ %>
                                                             <% _.each(allusers, function(v, k) {%>
-                                                                <div class="col-md-12">
-                                                                    <a href="#" class="assignClassModal"> <img class="img-circle thumb-sm" alt="64x64" src="/assets/images/users/avatar-2.jpg"> <%= v.xname %> </a>
-                                                                    <input class="assign_chck" type="checkbox" checked data-plugin="switchery" data-uid="<%= v.user_id %> " data-color="#00b19d" data-size="small"/>
-                                                                </div>
+                                                                <% if(taggedUserArray.indexOf(v.user_id) > -1){ %>
+                                                                    <div class="col-md-12">
+                                                                        <a href="#" class="assignClassModal"> <img class="img-circle thumb-sm" alt="64x64" src="/assets/images/users/avatar-2.jpg"> <%= v.xname %> </a>
+                                                                        <input class="assign_chck" type="checkbox" data-plugin="switchery" data-uid="<%= v.user_id %> " data-color="#00b19d" data-size="small" checked/>
+                                                                    </div>
+                                                                <% }else{ %>
+                                                                    <div class="col-md-12">
+                                                                        <a href="#" class="assignClassModal"> <img class="img-circle thumb-sm" alt="64x64" src="/assets/images/users/avatar-2.jpg"> <%= v.xname %> </a>
+                                                                        <input class="assign_chck" type="checkbox" data-plugin="switchery" data-uid="<%= v.user_id %> " data-color="#00b19d" data-size="small"/>
+                                                                    </div>
+                                                                <% }%>
                                                             <% }); %>
                                                         <% } %>
                                                     <% } %>
@@ -106,7 +122,7 @@
                             <div class="attached-files m-t-30">
                                 <h5 class="font-600">Attached Files </h5>
                                 <div class="files-list">
-                                    <div class="file-box">
+                                    <!-- <div class="file-box">
                                         <a href=""><img src="/assets/images/attached-files/img-1.jpg" class="img-responsive img-thumbnail" alt="attached-img"></a>
                                         <p class="font-13 m-b-5 text-muted"><small>File one</small></p>
                                     </div>
@@ -117,7 +133,7 @@
                                     <div class="file-box">
                                         <a href=""><img src="/assets/images/attached-files/img-3.png" class="img-responsive img-thumbnail" alt="attached-img"></a>
                                         <p class="font-13 m-b-5 text-muted"><small>Dribbble shot</small></p>
-                                    </div>
+                                    </div> -->
                                     <div class="file-box m-l-15">
                                         <div class="fileupload add-new-plus">
                                             <span><i class="zmdi-plus zmdi"></i></span>
@@ -143,7 +159,7 @@
                     </div><!-- end col -->
 
                     <div class="col-md-4">
-                        <div class="card-box">
+                        <div class="card-box m_chat-box">
                             <h4 class="header-title m-t-0 m-b-30">Comments (6)</h4>
 
                             <div>
@@ -161,7 +177,7 @@
                                         <a href="" class="text-success font-13">Reply</a>
                                     </div>
                                 </div>
-                                <div class="media">
+                                <div class="media m_bot">
                                     <div class="media-left">
                                         <a href="#"> <img class="media-object img-circle thumb-sm" alt="64x64" src="/assets/images/users/avatar-1.jpg"> </a>
                                     </div>
@@ -205,12 +221,30 @@
 <!-- Bootstrap tagsinput -->
 <script src="/assets/plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
 
+<!-- SOCKET CONNECTION -->
+<script src="/javascripts/basic_tm.js"></script>
 
+<!-- end chat -->
+<script>
+    var user_id = '<%= user_id %>';
+    var user_fullname = '<%= user_fullname %>';
+    var activity_id = '<%= activity_id %>';
+    var preAssing = '<%= taggedUserStr %>';
+    var preAssignArr = [];
+</script>
 
 <script type="text/javascript">
     $(document).ready(function() {
         $('#datatable').dataTable();
     } );
+
+    if(preAssing != ''){
+        $.each(preAssing.split(','),function(k,v){
+            if(preAssignArr.indexOf(v) === -1){
+                preAssignArr.push(v);
+            }
+        });
+    }
 
     function assignMember(){
         var assignUlist = [];
@@ -220,16 +254,45 @@
                 assignUlist.push($(v).attr('data-uid'))
             }    
         });
-
+        
         socket.emit('assignMember', {
             tagged_by: user_id,
-            assignlis: assignUlist
+            assignlis: assignUlist,
+            activity_id:activity_id,
+            user_type: '2'
         }, function(response){
             if(response.response.status){
-                
+                $('.close').trigger('click');
             }else{
-
+                toastr["error"]("Something wrong!!");
+                toastr.options = {
+                    "closeButton": false,
+                    "newestOnTop": false,
+                    "positionClass": "toast-top-right"
+                };
             }
         });
     }
+
+    $('#tagsinput').on('itemAdded', function(event) {
+        console.log(event);
+        console.log(event.result);
+        console.log(event.item);
+        if(event.result != undefined){
+            socket.emit('tagSave', {
+                tagged_by: user_id,
+                tittle: event.item,
+                activity_id:activity_id
+            }, function(response){
+                console.log(response);
+            });
+        }
+        
+    });
+
+    $('#tagsinput').on('itemRemoved', function(event) {
+        // event.item: contains the item
+        console.log(event.item);
+    });
 </script>
+

@@ -7,7 +7,7 @@ var router = express.Router();
 
 // Load Input Validation
 const validateActivityEntryInput = require('../validation/activity_entry');
-var {allActivity, activity_detail,getUserDetailByid, getAllusers} = require('../utils/activity');
+var {allActivity, activity_detail,getUserDetailByid, getAllusers,getAllTaggedUsers,getAllTags} = require('../utils/activity');
 
 // render dashboard after successfully login
 router.get('/', function(req, res, next){
@@ -59,6 +59,7 @@ router.get('/', function(req, res, next){
 router.get('/taskDetail/:id', async function(req, res, next){
     if(req.session.login){
         var res_data = [];
+
         res_data.user_id = req.session.user_id;
         res_data.user_fullname = req.session.user_fullname;
         res_data.user_email = req.session.user_email;
@@ -66,26 +67,42 @@ router.get('/taskDetail/:id', async function(req, res, next){
         res_data.page_title = 'Task Detail';
         res_data._ = _;
         res_data.moment = moment;
+        res_data.activity_id = req.params.id;
+        
         var allusers = await getAllusers(req.session.user_id);
-        res_data.allusers = allusers.results;
-        var activity = [];
-        activity_detail(req.params.id,(response)=>{
-            if(response.status){
-                res_data.activity = response.results;
-                res_data.title = res_data.activity[0].title;
+        var activityDetail = await activity_detail(req.params.id).catch((error)=>{console.log(error)});
+        var allTaggedUsers = await  getAllTaggedUsers(req.params.id).catch((error)=>{console.log(error)});
+        var allTags = await  getAllTags(req.params.id).catch((error)=>{console.log(error)});
 
-                getUserDetailByid(res_data.activity[0].created_by,(resp)=>{
-                    res_data.crteatedByName = resp.results[0].xname;
-                    res_data.crteatedById = resp.results[0].user_id;
-                    console.log(81,resp.results[0].user_id);
-                    res.render('task_detail',res_data);
-                });
-                
-            }else{
-                res_data.title = 'Task List | TM::SOHELFSF';
-                res.render('task_detail',res_data);
+        res_data.allusers = allusers.results;
+        var userList = {};
+        
+        _.forEach(allusers.results, function(value) {
+            userList[value.user_id ] = value.xname;
+        });
+
+        var taggedUserArray= [];
+        var tagsArray= [];
+        
+        _.forEach(allTaggedUsers.results, function(value) {
+            if(value.user_id != req.session.user_id){
+                taggedUserArray.push(value.user_id);
             }
         });
+
+        _.forEach(allTags.results, function(value) {
+            tagsArray.push(value.title);
+        });
+
+        res_data.tags = tagsArray.join(',');
+        res_data.activity = activityDetail.results;
+        res_data.taggedUserArray = taggedUserArray;
+        res_data.taggedUserStr = taggedUserArray.join(',');
+        res_data.title = res_data.activity[0].title;
+        res_data.crteatedByName = userList[res_data.activity[0].created_by];
+        res_data.crteatedById = res_data.activity[0].created_by;
+        
+        res.render('task_detail',res_data);
 
     } else {
         res.redirect('/');

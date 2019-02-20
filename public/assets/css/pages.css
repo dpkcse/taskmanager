@@ -2376,3 +2376,15 @@ div.hopscotch-bubble .hopscotch-bubble-arrow-container.down .hopscotch-bubble-ar
 .assignClassModal img{
   margin-right: 5%;
 }
+
+.m_chat-box{
+  height: 690px;
+  position: relative;
+}
+
+.m_bot{
+  position: absolute;
+  bottom: 3px;
+  left: 17px;
+  width: 90%;
+}
